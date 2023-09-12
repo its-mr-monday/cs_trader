@@ -1,4 +1,5 @@
 from steampy.client import SteamClient
+from cs_trader_bot.botAuth import botAuth
 
 class TradeBotException(Exception):
     pass
@@ -10,11 +11,12 @@ def is_logged_in(func):
         raise TradeBotException("You are not logged in!")
     
 class TradeBot:
-    def __init__(self, username: str, password: str, api_key: str, steamguard_path: str):
-        self.username = username
-        self.password = password
-        self.api_key = api_key
-        self.steamguard_path = steamguard_path
+    def __init__(self, auth: botAuth):
+        self.auth = auth
+        self.username = self.auth.get_username()
+        self.password = self.auth.get_password()
+        self.api_key = self.auth.get_api_key()
+        self.steamguard_path = self.auth.get_steamguard_path()
         self.isLogged = False
         self.client = SteamClient(self.api_key)
         self.login()
